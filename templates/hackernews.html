@@ -2,15 +2,14 @@
 
 {% set title = 'Hacker News Summary'|translate(lang) ~ (' - ' ~ date if date else '') -%}
 {% set site = 'hackernews' -%}
+{% set path = page_url(directory, lang) -%}
 {% set description = 'Hacker News Summary leverages AI technology to extract summaries and illustrations from Hacker News posts, providing a seamless news scanning experience.' -%}
 
 {% block head %}
     <meta name="description" content="{{ description }}">
     <link rel="canonical" href="{{ path }}"/>
-    {% if not date %}
-    <link rel="alternate" hreflang="en" href="{{ config.site }}/"/>
-    <link rel="alternate" hreflang="zh" href="{{ config.site }}/zh"/>
-    {% endif %}
+    <link rel="alternate" hreflang="en" href="{{ page_url(directory, 'en') }}"/>
+    <link rel="alternate" hreflang="zh" href="{{ page_url(directory, 'zh') }}"/>
     <meta name="twitter:card" content="summary"/>
     <meta name="twitter:title" content="{{ title }}"/>
     <meta name="twitter:description" content="{{ description }}"/>
@@ -18,7 +17,7 @@
 {% endblock %}
 
 {% block nav_brand %}
-    <a class="navbar-brand" href="{{ config.site }}/">Hacker News Summary</a>
+    <a class="navbar-brand" href="{{ page_url('', lang) }}">Hacker News Summary</a>
 {% endblock %}
 
 {% block nav_links %}

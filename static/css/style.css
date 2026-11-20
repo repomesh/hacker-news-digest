@@ -153,8 +153,8 @@ footer li, footer li a {
     }
 }
 
-/* Theme toggle icon */
-#theme-toggle a {
+/* Theme and language toggle icons */
+#theme-toggle a, #lang-toggle a {
     cursor: pointer;
     font-size: 1.1em;
 }

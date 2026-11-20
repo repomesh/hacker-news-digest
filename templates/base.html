@@ -84,7 +84,7 @@
                     <ul class="dropdown-menu" id="daily-links-menu">
                         {% for link in daily_links %}
                             <li {% if loop.index > 10 %}class="extra-link" style="display: none;"{% endif %}>
-                                <a href="{{ config.site }}/daily/{{ link }}/">{{ link }}</a>
+                                <a href="{{ page_url('daily/' ~ link ~ '/', lang) }}">{{ link }}</a>
                             </li>
                         {% endfor %}
                         {% if daily_links|length > 10 %}
@@ -130,20 +130,11 @@
                                                    data-top="-1">All</a></li>
                     </ul>
                 </li>
-                <!-- <li class="translate-dropdown" title="{{ 'Translate'|translate(lang) }}">
-                    <a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true" href="#">
-                        {{ 'Translate'|translate(lang) }}
-                        <span class="caret"></span>
+                <li id="lang-toggle" title="{{ 'English' if lang == 'zh' else '中文' }}">
+                    <a href="{{ page_url(directory, 'en' if lang == 'zh' else 'zh') }}">
+                        <i class="fa fa-language"></i>
                     </a>
-                    <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu2">
-                        <li role="presentation">
-                            <a role="menuitem" href="/">English</a>
-                        </li>
-                        <li role="presentation">
-                            <a role="menuitem" href="/zh.html">中文</a>
-                        </li>
-                    </ul>
-                </li> -->
+                </li>
                 <li id="theme-toggle" title="Toggle Dark Mode">
                     <a href="#">
                         <i class="fa fa-moon-o"></i>
@@ -235,15 +226,17 @@
                     </a>
                 {% endif %}
                 {% if news.summary %}
+                    {% set summary = news.summary|translate(lang) -%}
+                    {# Only original texts of non-LLM summaries are trusted HTML, translations are not #}
+                    {% set trusted = summary == news.summary and not news.summarized_by.need_escape() -%}
                     <div class="{% if news.summary.startswith('<iframe') %}embed-responsive embed-responsive-16by9 {% else %}summary-text{% endif %}"
-                        {% if news.summarized_by.is_final() and news.summary|translate(lang)|length > config.summary_size %}
-                         title="{{ news.summary|translate(lang)|trim }}"
+                        {% if news.summarized_by.is_final() and summary|length > config.summary_size %}
+                         title="{{ summary|trim }}"
                         {% endif %}>
-                        {% set summary = news.summary|translate(lang) -%}
 {#                        {% if news.summarized_by.can_truncate() %}#}
                             {% set summary = summary|truncate -%}
 {#                        {% endif %}#}
-                        {% if not news.summarized_by.need_escape() %}
+                        {% if trusted %}
                             {% set summary = summary|safe -%}
                         {% endif %}
                         {{ summary }}
@@ -276,10 +269,10 @@
                 </a>
                 <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu3">
                     <li role="presentation">
-                        <a role="menuitem" href="/">English</a>
+                        <a role="menuitem" href="{{ page_url(directory, 'en') }}">English</a>
                     </li>
                     <li role="presentation">
-                        <a role="menuitem" href="/zh">中文</a>
+                        <a role="menuitem" href="{{ page_url(directory, 'zh') }}">中文</a>
                     </li>
                 </ul>
             </li>

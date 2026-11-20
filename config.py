@@ -51,7 +51,6 @@ sites_for_users = ('github.com', 'medium.com', 'twitter.com')
 
 disable_ads = os.getenv('DISABLE_ADS') == '1'
 disable_summary_cache = os.getenv('DISABLE_SUMMARY_CACHE') == '1'
-disable_translation_cache = os.getenv('DISABLE_TRANSLATION_CACHE') == '1'
 force_fetch_feature_image = os.getenv('FORCE_FETCH_FEATURE_IMAGE') == '1'
 
 disable_local_qwen = os.getenv('DISABLE_LOCAL_QWEN') == '1'
@@ -66,8 +65,6 @@ openai_model = os.getenv('OPENAI_MODEL') or 'gpt-3.5-turbo'
 openai_score_threshold = int_env('OPENAI_SCORE_THRESHOLD', 10)
 local_llm_score_threshold = 5
 logger.info(f'Use openai model {openai_model}')
-
-disable_translation = os.getenv('DISABLE_TRANSLATION') == '1'
 
 output_dir = os.path.join(os.path.dirname(__file__), 'output/')
 image_dir = os.path.join(output_dir, 'image/')
